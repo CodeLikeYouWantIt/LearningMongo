@@ -9,23 +9,38 @@ server.connection({
   port: 8080
 });
 
-server.route({
-  //Get tour List
+server.route([
+  {
+    //Get tour List
+    method: 'GET',
+    path: '/api/tours',
+    handler: function(request, reply) {
+      //allow user to search by parameters
+      var findObject = {};
+      for (var key in request.query) {
+        findObject[key] = request.query[key];
+      }
 
-  method: 'GET',
-  path: '/api/tours',
-  handler: function(request, reply) {
-    //retrieve list of all tours in the database
-    collection.find().toArray(function(error, tours) {
-      reply(tours);
-    });
+      //retrieve list of all tours in the database
+      collection.find(findObject).toArray(function(error, tours) {
+        reply(tours);
+      });
+    }
+  },
+  {
+    //Get a single tour
+    method: 'GET',
+    path: '/api/tours/{name}',
+    handler: function(request, reply) {
+      reply('Retrieving ' + request.params.name);
+    }
   }
-});
+]);
 
 MongoClient.connect(url, function(err, db) {
   console.log('Successfully Connected to Server');
   collection = db.collection('tours');
   server.start(function(err) {
-    console.log('Hapy is listening to http://localhost:8080');
+    console.log('Hapi is listening to http://localhost:8080');
   });
 });
