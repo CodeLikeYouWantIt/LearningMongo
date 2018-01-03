@@ -15,6 +15,7 @@ server.route({
   method: 'GET',
   path: '/api/tours',
   handler: function(request, reply) {
+    //retrieve list of all tours in the database
     collection.find().toArray(function(error, tours) {
       reply(tours);
     });
