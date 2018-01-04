@@ -1,45 +1,59 @@
-var MongoClient = require('mongodb').MongoClient,
-  Hapi = require('hapi');
-//this is using the mongodb package
+//create MongoClient var
+var MongoClient = require('mongodb').MongoClient;
 
+// set url
 var url = 'mongodb://localhost:27017/learning_mongo';
 
+//create Hapi var
+var Hapi = require('hapi');
+
+//create server var
 var server = new Hapi.Server();
+
+//connect server to port
 server.connection({
   port: 8080
 });
 
 server.route([
+  //Display all tours
   {
-    //Get tour List
     method: 'GET',
     path: '/api/tours',
     handler: function(request, reply) {
-      //allow user to search by parameters
-      var findObject = {};
+      var userSearch = {};
       for (var key in request.query) {
-        findObject[key] = request.query[key];
+        userSearch[key] = request.query[key];
       }
-
-      //retrieve list of all tours in the database
-      collection.find(findObject).toArray(function(error, tours) {
+      collection.find(userSearch).toArray(function(error, tours) {
         reply(tours);
       });
     }
   },
+
+  //Display one tour
   {
-    //Get a single tour
     method: 'GET',
     path: '/api/tours/{name}',
     handler: function(request, reply) {
-      reply('Retrieving ' + request.params.name);
+      collection.findOne({ tourName: request.params.name }, function(error, tour) {
+        reply(tour);
+      });
     }
   }
 ]);
 
+//this is using the mongodb package
+var url = 'mongodb://localhost:27017/learning_mongo';
+
 MongoClient.connect(url, function(err, db) {
+  //show user server connected successfuly
   console.log('Successfully Connected to Server');
+
+  //collection tours
   collection = db.collection('tours');
+
+  //start server
   server.start(function(err) {
     console.log('Hapi is listening to http://localhost:8080');
   });
