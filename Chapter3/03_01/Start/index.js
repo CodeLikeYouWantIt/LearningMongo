@@ -1,9 +1,6 @@
 //create MongoClient var
 var MongoClient = require('mongodb').MongoClient;
 
-// set url
-var url = 'mongodb://localhost:27017/learning_mongo';
-
 //create Hapi var
 var Hapi = require('hapi');
 
@@ -16,6 +13,15 @@ server.connection({
 });
 
 server.route([
+  //Homepage
+
+  {
+    method: 'GET',
+    path: '/',
+    handler: function(request, reply) {
+      reply('Hello World');
+    }
+  },
   //Display all tours
   {
     method: 'GET',
@@ -50,6 +56,39 @@ server.route([
     handler: function(request, reply) {
       collection.insertOne(request.payload, function(error, result) {
         reply(request.payload);
+      });
+    }
+  },
+
+  //update a single tour
+  {
+    method: 'PUT',
+    path: '/api/tours/{name}',
+    handler: function(request, reply) {
+      if (request.query.replace == 'true') {
+        request.payload.tourName = request.params.name;
+        collection.replaceOne({ tourName: request.params.name }, request.payload, function(error, results) {
+          collection.findOne({ tourName: request.params.name }, function(error, results) {
+            reply(results);
+          });
+        });
+      } else {
+        collection.updateOne({ tourName: request.params.name }, { $set: request.payload }, function(error, results) {
+          collection.findOne({ tourName: request.params.name }, function(error, results) {
+            reply(results);
+          });
+        });
+      }
+    }
+  },
+
+  //Delete Single Tour
+  {
+    method: 'DELETE',
+    path: '/api/tours/{name}',
+    handler: function(request, reply) {
+      collection.deleteOne({ tourName: request.params.name }, function(error, results) {
+        reply().code(204);
       });
     }
   }
