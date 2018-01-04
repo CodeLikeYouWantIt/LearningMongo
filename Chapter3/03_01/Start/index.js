@@ -40,6 +40,18 @@ server.route([
         reply(tour);
       });
     }
+  },
+
+  //create a new tour
+  //request.payload contains all fields and values sent by the client
+  {
+    method: 'POST',
+    path: '/api/tours',
+    handler: function(request, reply) {
+      collection.insertOne(request.payload, function(error, result) {
+        reply(request.payload);
+      });
+    }
   }
 ]);
 
