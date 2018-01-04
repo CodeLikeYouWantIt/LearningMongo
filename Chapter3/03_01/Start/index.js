@@ -1,11 +1,11 @@
-//create MongoClient var
-var MongoClient = require('mongodb').MongoClient;
+//create MongoClient const
+const MongoClient = require('mongodb').MongoClient;
 
-//create Hapi var
-var Hapi = require('hapi');
+//create Hapi const
+const Hapi = require('hapi');
 
-//create server var
-var server = new Hapi.Server();
+//create server const
+const server = new Hapi.Server();
 
 //connect server to port
 server.connection({
@@ -18,7 +18,7 @@ server.route([
   {
     method: 'GET',
     path: '/',
-    handler: function(request, reply) {
+    handler: (request, reply) => {
       reply('Hello World');
     }
   },
@@ -26,12 +26,12 @@ server.route([
   {
     method: 'GET',
     path: '/api/tours',
-    handler: function(request, reply) {
-      var userSearch = {};
-      for (var key in request.query) {
+    handler: (request, reply) => {
+      const userSearch = {};
+      for (const key in request.query) {
         userSearch[key] = request.query[key];
       }
-      collection.find(userSearch).toArray(function(error, tours) {
+      collection.find(userSearch).toArray((error, tours) => {
         reply(tours);
       });
     }
@@ -41,8 +41,8 @@ server.route([
   {
     method: 'GET',
     path: '/api/tours/{name}',
-    handler: function(request, reply) {
-      collection.findOne({ tourName: request.params.name }, function(error, tour) {
+    handler: (request, reply) => {
+      collection.findOne({ tourName: request.params.name }, (error, tour) => {
         reply(tour);
       });
     }
@@ -53,8 +53,8 @@ server.route([
   {
     method: 'POST',
     path: '/api/tours',
-    handler: function(request, reply) {
-      collection.insertOne(request.payload, function(error, result) {
+    handler: (request, reply) => {
+      collection.insertOne(request.payload, (error, result) => {
         reply(request.payload);
       });
     }
@@ -64,17 +64,17 @@ server.route([
   {
     method: 'PUT',
     path: '/api/tours/{name}',
-    handler: function(request, reply) {
+    handler: (request, reply) => {
       if (request.query.replace == 'true') {
         request.payload.tourName = request.params.name;
-        collection.replaceOne({ tourName: request.params.name }, request.payload, function(error, results) {
-          collection.findOne({ tourName: request.params.name }, function(error, results) {
+        collection.replaceOne({ tourName: request.params.name }, request.payload, (error, results) => {
+          collection.findOne({ tourName: request.params.name }, (error, results) => {
             reply(results);
           });
         });
       } else {
-        collection.updateOne({ tourName: request.params.name }, { $set: request.payload }, function(error, results) {
-          collection.findOne({ tourName: request.params.name }, function(error, results) {
+        collection.updateOne({ tourName: request.params.name }, { $set: request.payload }, (error, results) => {
+          collection.findOne({ tourName: request.params.name }, (error, results) => {
             reply(results);
           });
         });
@@ -86,8 +86,8 @@ server.route([
   {
     method: 'DELETE',
     path: '/api/tours/{name}',
-    handler: function(request, reply) {
-      collection.deleteOne({ tourName: request.params.name }, function(error, results) {
+    handler: (request, reply) => {
+      collection.deleteOne({ tourName: request.params.name }, (error, results) => {
         reply().code(204);
       });
     }
@@ -95,7 +95,7 @@ server.route([
 ]);
 
 //this is using the mongodb package
-var url = 'mongodb://localhost:27017/learning_mongo';
+const url = 'mongodb://localhost:27017/learning_mongo';
 
 MongoClient.connect(url, function(err, db) {
   //show user server connected successfuly
