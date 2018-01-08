@@ -1,6 +1,5 @@
 //create MongoClient const
 const MongoClient = require('mongodb').MongoClient;
-
 //create Hapi const
 const Hapi = require('hapi');
 
