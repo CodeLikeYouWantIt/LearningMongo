@@ -4,7 +4,10 @@
   "description": "Required libraries for the learning_mongodb class",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "api": "node ratingsAPI.js",
+    "format": "prettier --wrie --single-quote --print-width=120 --parser=flow --tab-width=2 \"js/**/*.{js,jsx}\"",
+    "lint": "eslint **/*.{js,jsx} --quiet"
   },
   "repository": {
     "type": "git",
@@ -13,8 +16,30 @@
   "author": "Kirsten Hunter",
   "license": "ISC",
   "dependencies": {
+    "axios": "0.16.1",
+    "babel-plugin-dynamic-import-webpack": "1.0.1",
+    "babel-plugin-transform-decorators-legacy": "1.3.4",
+    "babel-register": "6.24.1",
+    "compression": "1.6.2",
+    "cors": "2.8.3",
+    "eslint-plugin-prettier": "^2.4.0",
+    "express": "4.15.3",
     "hapi": "^16.1.0",
+    "lodash": "4.17.4",
     "mongodb": "^2.2.22",
-    "react": "^16.2.0"
+    "preact": "8.1.0",
+    "preact-compat": "3.16.0",
+    "prop-types": "15.5.10",
+    "react": "^16.2.0",
+    "react-addons-perf": "15.4.2",
+    "react-dom": "15.5.4",
+    "react-redux": "5.0.5",
+    "react-router-dom": "4.1.1",
+    "redux": "3.6.0",
+    "redux-thunk": "2.2.0",
+    "styled-components": "2.0.0",
+    "webpack": "2.6.1",
+    "webpack-dev-middleware": "1.10.2",
+    "webpack-hot-middleware": "2.18.0"
   }
 }
